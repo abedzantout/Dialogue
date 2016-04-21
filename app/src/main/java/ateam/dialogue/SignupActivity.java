@@ -3,6 +3,7 @@ package ateam.dialogue;
 /**
  * Created by AbedZantout on 3/27/16.
  */
+
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,23 +15,36 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import butterknife.ButterKnife;
 import butterknife.Bind;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    @Bind(R.id.input_name) EditText _nameText;
-    @Bind(R.id.input_email) EditText _emailText;
-    @Bind(R.id.input_password) EditText _passwordText;
-    @Bind(R.id.btn_signup) Button _signupButton;
-    @Bind(R.id.link_login) TextView _loginLink;
+    private static final String PASSWORD_PATTERN = "^[a-zA-Z]\\w{3,14}$";
+    private Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+    private Matcher matcher;
+
+    @Bind(R.id.input_name)
+    EditText _nameText;
+    @Bind(R.id.input_email)
+    EditText _emailText;
+    @Bind(R.id.input_password)
+    EditText _passwordText;
+    @Bind(R.id.btn_signup)
+    Button _signupButton;
+    @Bind(R.id.link_login)
+    TextView _loginLink;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
         ButterKnife.bind(this);
+
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,15 +85,13 @@ public class SignupActivity extends AppCompatActivity {
         // TODO: Implement your own signup logic here.
 
 
-
-
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onSignupSuccess or onSignupFailed
                         // depending on success
                         onSignupSuccess();
-                        // onSignupFailed();
+                        onSignupFailed();
                         progressDialog.dismiss();
                     }
                 }, 3000);
@@ -119,13 +131,27 @@ public class SignupActivity extends AppCompatActivity {
             _emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+
+        if (validatePassword(password)) {
+            _passwordText.setError("first character must be a letter, it must contain at least 4 characters and no more than 15 characters");
             valid = false;
         } else {
             _passwordText.setError(null);
         }
-
         return valid;
+    }
+
+    /**
+     * The password's first character must be a letter, it must contain at least 4
+     * characters and no more than 15 characters and no characters other than letters,
+     * numbers and the underscore may be used
+     * regular expression = ^[a-zA-Z]\w{3,14}$
+     *
+     * @param password
+     * @return false if password does not match the regex or is empty
+     */
+    public boolean validatePassword(String password) {
+        matcher = pattern.matcher(password);
+        return !matcher.matches() || password.isEmpty();
     }
 }
