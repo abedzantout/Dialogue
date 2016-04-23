@@ -5,7 +5,10 @@ package ateam.dialogue;
  */
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -16,10 +19,25 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+
 import butterknife.ButterKnife;
 import butterknife.Bind;
 
-public abstract class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
@@ -78,6 +96,79 @@ public abstract class LoginActivity extends AppCompatActivity {
 
         // TODO: Implement your own authentication logic here.
 
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        String link = "http://192.168.2.122/authenticate.php?email="+email+"&password="+password;
+
+
+        try {
+
+            URL url = new URL(link);
+            HttpClient client = new DefaultHttpClient();
+            HttpGet request = new HttpGet();
+            request.setURI(new URI(link));
+
+            HttpResponse response = client.execute(request);
+            String json = EntityUtils.toString(response.getEntity());
+
+            System.out.println("HTTP RESPONSE: " + json);
+
+            AlertDialog alert = new AlertDialog.Builder(this).create();
+
+            if(json.equals("f")){
+
+                progressDialog.hide();
+
+                alert.setTitle("Login Failed");
+                alert.setMessage("Invalid email and/or password.");
+                alert.setButton(AlertDialog.BUTTON_NEUTRAL, "Try Again",
+
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+
+                alert.show();
+            }else{
+
+                // Login Successful
+                // Start MainActivity with the user info pushed as extras
+                // Display user info in MainActivity and all other activities needed
+
+
+                progressDialog.hide();  //TODO: to be removed
+
+                alert.setTitle("Success");
+                alert.setMessage("Logged in");
+                alert.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+
+
+                alert.show();
+
+            }
+
+        }catch(MalformedURLException murle){
+            System.out.println("Malformed URL detected.");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }catch(IOException ioe){
+            System.out.println("An IOException occured.");
+        }
+
+        /*
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
@@ -87,7 +178,12 @@ public abstract class LoginActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                     }
                 }, 3000);
+
+          */
+
     }
+
+
 
 
     @Override
@@ -132,7 +228,7 @@ public abstract class LoginActivity extends AppCompatActivity {
             _emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+        if (password.isEmpty() || password.length() < 3 || password.length() > 14) {
             _passwordText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         } else {

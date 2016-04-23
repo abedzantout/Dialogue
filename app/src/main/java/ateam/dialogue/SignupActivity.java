@@ -5,16 +5,30 @@ package ateam.dialogue;
  */
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.StrictMode;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 
+import java.io.IOException;
+import java.io.*;
+import java.net.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,6 +53,7 @@ public class SignupActivity extends AppCompatActivity {
     @Bind(R.id.link_login)
     TextView _loginLink;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,9 +72,13 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Finish the registration screen and return to the Login activity
+
+                Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                startActivity(i);
                 finish();
             }
         });
+
     }
 
     public void signup() {
@@ -78,14 +97,75 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String name = _nameText.getText().toString();
+        String username = _nameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
 
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
-        new android.os.Handler().postDelayed(
+        String link = "http://192.168.2.122/insert.php?username="+username+"&email="+email+"&password="+password;
+
+        String responseString = "";
+
+        try {
+
+            URL url = new URL(link);
+            HttpClient client = new DefaultHttpClient();
+            HttpGet request = new HttpGet();
+            request.setURI(new URI(link));
+
+            HttpResponse response = client.execute(request);
+            BufferedReader in = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+
+            String line = "";
+
+            while((line = in.readLine()) != null){
+                responseString += line;
+            }
+
+
+
+        }catch(MalformedURLException murle){
+            System.out.println("Malformed URL detected.");
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }catch(IOException ioe){
+            System.out.println("An IOException occured.");
+        }
+
+
+        if(responseString.equals("s")){
+
+            AlertDialog alert = new AlertDialog.Builder(this).create();
+            alert.setTitle("Success");
+            alert.setMessage("Your account has been created.");
+            alert.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
+
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+
+
+            alert.show();
+
+        }
+
+
+        Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(i);
+        finish();
+
+        /*
+        new Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onSignupSuccess or onSignupFailed
@@ -95,6 +175,7 @@ public class SignupActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                     }
                 }, 3000);
+         */
     }
 
 
@@ -124,7 +205,7 @@ public class SignupActivity extends AppCompatActivity {
             _nameText.setError(null);
         }
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (email.isEmpty() || !Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             _emailText.setError("enter a valid email address");
             valid = false;
         } else {
@@ -154,4 +235,15 @@ public class SignupActivity extends AppCompatActivity {
         matcher = pattern.matcher(password);
         return !matcher.matches() || password.isEmpty();
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
 }
