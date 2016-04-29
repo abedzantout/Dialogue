@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        String link = "http://192.168.0.184/authenticate.php?email="+email+"&password="+password;
+        String link = "http://192.168.0.184/authenticate.php?email=" + email + "&password=" + password;
 
 
         try {
@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
 
             AlertDialog alert = new AlertDialog.Builder(this).create();
 
-            if(json.equals("f")){
+            if (json.equals("f")) {
 
                 progressDialog.hide();
 
@@ -136,24 +136,24 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 alert.show();
-            }else{
+            } else {
 
                 // Login Successful
                 // Start MainActivity with the user info pushed as extras
                 // Display user info in MainActivity and all other activities needed
 
-                Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
                 // push user info
                 startActivity(i);
 
 
             }
 
-        }catch(MalformedURLException murle){
+        } catch (MalformedURLException murle) {
             System.out.println("Malformed URL detected.");
         } catch (URISyntaxException e) {
             e.printStackTrace();
-        }catch(IOException ioe){
+        } catch (IOException ioe) {
             System.out.println("An IOException Occured.");
         }
 
@@ -171,8 +171,6 @@ public class LoginActivity extends AppCompatActivity {
           */
 
     }
-
-
 
 
     @Override
