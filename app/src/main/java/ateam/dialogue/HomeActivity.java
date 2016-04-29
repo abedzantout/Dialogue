@@ -1,6 +1,7 @@
 package ateam.dialogue;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.v4.app.FragmentActivity;
@@ -9,6 +10,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -34,7 +37,7 @@ public class HomeActivity extends Activity {
     public String[] convertToStringArray(String jsonData){
         String x = jsonData.substring(1, jsonData.length()-1);
         x = x.replace("\"", "");
-        x = x.replace("TITLE", "");
+        x = x.replace("Title", "");
         x = x.replace(":", "");
         x = x.replace("{", "");
         x = x.replace("}", "");
@@ -97,7 +100,19 @@ public class HomeActivity extends Activity {
 
             ListView threads = (ListView) findViewById(R.id.threadView);
             threads.setAdapter(adapter);
+            threads.setClickable(true);
+            threads.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                    Intent i = new Intent(getApplicationContext(), ThreadActivity.class);
+                    i.putExtra("THREADID", position+1);
+                    i.putExtra("TITLE", parent.getAdapter().getItem(position).toString());
+                    startActivity(i);
+
+
+                }
+            });
 
 
         }catch(MalformedURLException murle){
