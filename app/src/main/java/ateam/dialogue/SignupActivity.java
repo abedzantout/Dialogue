@@ -8,11 +8,14 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -110,7 +113,8 @@ public class SignupActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        String link = "http://192.168.2.122/insert.php?username="+username+"&email="+email+"&password="+password;
+
+        String link = "http://192.168.0.184/insert.php?username="+username+"&email="+email+"&password="+password;
 
         String responseString = "";
 

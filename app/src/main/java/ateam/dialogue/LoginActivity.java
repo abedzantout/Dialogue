@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        String link = "http://192.168.2.122/authenticate.php?email="+email+"&password="+password;
+        String link = "http://192.168.0.184/authenticate.php?email="+email+"&password="+password;
 
 
         try {
@@ -142,21 +142,10 @@ public class LoginActivity extends AppCompatActivity {
                 // Start MainActivity with the user info pushed as extras
                 // Display user info in MainActivity and all other activities needed
 
+                Intent i = new Intent(getApplicationContext(), HomeActivity.class);
+                // push user info
+                startActivity(i);
 
-                progressDialog.hide();  //TODO: to be removed
-
-                alert.setTitle("Success");
-                alert.setMessage("Logged in");
-                alert.setButton(AlertDialog.BUTTON_NEUTRAL, "Ok",
-
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-
-
-                alert.show();
 
             }
 
@@ -165,7 +154,7 @@ public class LoginActivity extends AppCompatActivity {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }catch(IOException ioe){
-            System.out.println("An IOException occured.");
+            System.out.println("An IOException Occured.");
         }
 
         /*
@@ -228,7 +217,7 @@ public class LoginActivity extends AppCompatActivity {
             _emailText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 3 || password.length() > 14) {
+        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
             _passwordText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         } else {
