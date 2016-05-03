@@ -3,6 +3,7 @@ package ateam.dialogue;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,26 +73,14 @@ public class ThreadFrame extends Fragment {
 
                     }
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity() , android.R.layout.simple_list_item_1, titlesArray);
+                    RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+                    int icons[] = {R.drawable.ic_search, R.drawable.ic_home, R.drawable.ic_user};
 
-                    //TODO: to fix
-                    ListView lv = (ListView) rootView.findViewById(R.id.listView);
-                    lv.setAdapter(adapter);
-                    lv.setClickable(true);
+                    MyAdapter mAdapter = new MyAdapter(titlesArray, icons, "Abbas Baydoun", "abbasbaydoun717@gmail.com", 2, getActivity());
 
-                    lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                            if(position == 1){
-                                System.out.println("first clicked");
-                            }else if(position == 2){
-                                System.out.println("Second clicked");
-                            }
-
-                        }
-                    });
+                    recyclerView.setAdapter(mAdapter);
 
                 } catch (MalformedURLException murle) {
                     murle.printStackTrace();
