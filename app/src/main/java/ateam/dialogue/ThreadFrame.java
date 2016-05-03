@@ -74,6 +74,8 @@ public class ThreadFrame extends Fragment {
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity() , android.R.layout.simple_list_item_1, titlesArray);
 
+
+                    //TODO: to fix
                     ListView lv = (ListView) rootView.findViewById(R.id.listView);
                     lv.setAdapter(adapter);
                     lv.setClickable(true);
