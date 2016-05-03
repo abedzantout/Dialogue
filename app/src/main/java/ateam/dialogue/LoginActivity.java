@@ -24,6 +24,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -142,9 +143,16 @@ public class LoginActivity extends AppCompatActivity {
                 // Start MainActivity with the user info pushed as extras
                 // Display user info in MainActivity and all other activities needed
 
-                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                // push user info
-                startActivity(i);
+                try {
+
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    // push user info
+
+                    startActivity(i);
+
+                }catch(Exception jsone){
+                    System.out.println("JSON Exception occurred.");
+                }
 
 
             }

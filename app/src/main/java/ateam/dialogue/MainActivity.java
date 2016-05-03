@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 import android.support.v4.widget.DrawerLayout;
+
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,8 +17,6 @@ import android.view.View;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.app.FragmentManager;
-import android.content.Intent;
-import android.app.FragmentTransaction;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -143,8 +142,11 @@ public class MainActivity extends AppCompatActivity {
     public void onTouchDrawer(final int position) {
         Fragment fragment = null;
         if (position == 1) {
-            fragment = new HomeFragment();
+          //  fragment = new HomeFragment();
         } else if (position == 2) {
+            System.out.println("CALLING FRAGMENT ...");
+            fragment = new ThreadFrame();
+            System.out.println("CALLED");
             //Intent intent = new Intent(this,HomeFragment.class);
             //startActivity(intent);
         }
