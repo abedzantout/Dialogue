@@ -1,7 +1,6 @@
 package ateam.dialogue;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,24 +17,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import android.app.Fragment;
 import android.content.Context;
-import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
-
-import android.view.GestureDetector;
-import android.view.MotionEvent;
 import android.app.FragmentManager;
-import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -59,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     String NAME = "Abed Zantout";
     String EMAIL = "aaz15@mail.aub.edu";
     int PROFILE = R.drawable.ic_user;
-
 
 
     private FloatingActionButton fab;
@@ -93,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
      */
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
