@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
@@ -14,13 +15,31 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import android.app.Fragment;
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.app.FragmentManager;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import java.util.List;
+import java.util.ArrayList;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -43,7 +62,12 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
     RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
     RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
-    DrawerLayout Drawer;                                  // Declaring DrawerLayout
+    DrawerLayout Drawer;// Declaring DrawerLayout
+
+    private List<Thread> threadList = new ArrayList<>();
+    private RecyclerView threadRV;
+    private ThreadAdapter threadAdapter;
+
 
     ActionBarDrawerToggle mDrawerToggle;                  // Declaring Action Bar Drawer Toggle
     /**
@@ -64,6 +88,35 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
+
+        threadRV = (RecyclerView) findViewById(R.id.threadRecyclerView);
+        System.out.println("threadRV set");
+
+        threadAdapter = new ThreadAdapter(threadList);
+        System.out.println("ADAPTER SET");
+        threadRV.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+
+        threadRV.setLayoutManager(mLayoutManager);
+        System.out.println("LAYOUT MANAGER SET");
+        //threadRV.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        threadRV.setItemAnimator(new DefaultItemAnimator());
+        threadRV.setAdapter(threadAdapter);
+
+//        threadRV.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), threadRV, new ClickListener() {
+//            @Override
+//            public void onClick(View view, int position) {
+//                Thread movie = threadList.get(position);
+//                Toast.makeText(getActivity().getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
+//            }
+//
+//            @Override
+//            public void onLongClick(View view, int position) {
+//
+//            }
+//        }));
+
+        prepareThreadData();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView); // Assigning the RecyclerView Object to the xml View
 
@@ -145,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
           //  fragment = new HomeFragment();
         } else if (position == 2) {
             System.out.println("CALLING FRAGMENT ...");
-            fragment = new ThreadFrame();
+          //  fragment = new ThreadFrame();
             System.out.println("CALLED");
             //Intent intent = new Intent(this,HomeFragment.class);
             //startActivity(intent);
@@ -220,4 +273,59 @@ public class MainActivity extends AppCompatActivity {
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
     }
+
+
+    private void prepareThreadData() {
+
+        Thread movie = new Thread("Mad Max: Fury Road", "Action & Adventure", "2015");
+        threadList.add(movie);
+
+        movie = new Thread("Inside Out", "Animation, Kids & Family", "2015");
+        threadList.add(movie);
+
+        movie = new Thread("Star Wars: Episode VII - The Force Awakens", "Action", "2015");
+        threadList.add(movie);
+
+        movie = new Thread("Shaun the Sheep", "Animation", "2015");
+        threadList.add(movie);
+
+        movie = new Thread("The Martian", "Science Fiction & Fantasy", "2015");
+        threadList.add(movie);
+
+        movie = new Thread("Mission: Impossible Rogue Nation", "Action", "2015");
+        threadList.add(movie);
+
+        movie = new Thread("Up", "Animation", "2009");
+        threadList.add(movie);
+
+        movie = new Thread("Star Trek", "Science Fiction", "2009");
+        threadList.add(movie);
+
+        movie = new Thread("The LEGO Movie", "Animation", "2014");
+        threadList.add(movie);
+
+        movie = new Thread("Iron Man", "Action & Adventure", "2008");
+        threadList.add(movie);
+
+        movie = new Thread("Aliens", "Science Fiction", "1986");
+        threadList.add(movie);
+
+        movie = new Thread("Chicken Run", "Animation", "2000");
+        threadList.add(movie);
+
+        movie = new Thread("Back to the Future", "Science Fiction", "1985");
+        threadList.add(movie);
+
+        movie = new Thread("Raiders of the Lost Ark", "Action & Adventure", "1981");
+        threadList.add(movie);
+
+        movie = new Thread("Goldfinger", "Action & Adventure", "1965");
+        threadList.add(movie);
+
+        movie = new Thread("Guardians of the Galaxy", "Science Fiction & Fantasy", "2014");
+        threadList.add(movie);
+
+        threadAdapter.notifyDataSetChanged();
+    }
+
 }
