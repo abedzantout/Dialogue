@@ -106,20 +106,6 @@ public class MainActivity extends AppCompatActivity {
 
         threadRV.setAdapter(threadAdapter);
 
-        threadRV.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), threadRV, new ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                System.out.println("Item clicked");
-                Thread movie = threadList.get(position);
-                Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
-
         prepareThreadData();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView); // Assigning the RecyclerView Object to the xml View
