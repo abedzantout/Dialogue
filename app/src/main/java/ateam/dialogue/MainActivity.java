@@ -99,22 +99,24 @@ public class MainActivity extends AppCompatActivity {
 
         threadRV.setLayoutManager(mLayoutManager);
         System.out.println("LAYOUT MANAGER SET");
-        //threadRV.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+        threadRV.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         threadRV.setItemAnimator(new DefaultItemAnimator());
+
         threadRV.setAdapter(threadAdapter);
 
-//        threadRV.addOnItemTouchListener(new RecyclerTouchListener(getActivity().getApplicationContext(), threadRV, new ClickListener() {
-//            @Override
-//            public void onClick(View view, int position) {
-//                Thread movie = threadList.get(position);
-//                Toast.makeText(getActivity().getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
-//            }
-//
-//            @Override
-//            public void onLongClick(View view, int position) {
-//
-//            }
-//        }));
+        threadRV.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), threadRV, new ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                System.out.println("Item clicked");
+                Thread movie = threadList.get(position);
+                Toast.makeText(getApplicationContext(), movie.getTitle() + " is selected!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
 
         prepareThreadData();
 
@@ -138,26 +140,25 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-            mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-                public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-                    View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
-                    if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
-                        Drawer.closeDrawers();
-                        onTouchDrawer(recyclerView.getChildPosition(child));
-                        return true;
-                    }
-                    return false;
+        mRecyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+                View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+                if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
+                    Drawer.closeDrawers();
+                    onTouchDrawer(recyclerView.getChildPosition(child));
+                    return true;
                 }
+                return false;
+            }
 
-                @Override
-                public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
-                }
+            @Override
+            public void onTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
+            }
 
-                @Override
-                public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
-                }
+            }
 
         });
 
@@ -195,10 +196,10 @@ public class MainActivity extends AppCompatActivity {
     public void onTouchDrawer(final int position) {
         Fragment fragment = null;
         if (position == 1) {
-          //  fragment = new HomeFragment();
+            //  fragment = new HomeFragment();
         } else if (position == 2) {
             System.out.println("CALLING FRAGMENT ...");
-          //  fragment = new ThreadFrame();
+            //  fragment = new ThreadFrame();
             System.out.println("CALLED");
             //Intent intent = new Intent(this,HomeFragment.class);
             //startActivity(intent);
@@ -328,4 +329,52 @@ public class MainActivity extends AppCompatActivity {
         threadAdapter.notifyDataSetChanged();
     }
 
+    public interface ClickListener {
+        void onClick(View view, int position);
+
+        void onLongClick(View view, int position);
+    }
+
+    public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+
+        private GestureDetector gestureDetector;
+        private MainActivity.ClickListener clickListener;
+
+        public RecyclerTouchListener(Context context, final RecyclerView threadRV, final MainActivity.ClickListener clickListener) {
+            this.clickListener = clickListener;
+            gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    View child = threadRV.findChildViewUnder(e.getX(), e.getY());
+                    if (child != null && clickListener != null) {
+                        clickListener.onLongClick(child, threadRV.getChildPosition(child));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+
+            View child = rv.findChildViewUnder(e.getX(), e.getY());
+            if (child != null && clickListener != null && gestureDetector.onTouchEvent(e)) {
+                clickListener.onClick(child, rv.getChildPosition(child));
+            }
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+    }
 }
