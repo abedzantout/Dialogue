@@ -1,8 +1,10 @@
 package ateam.dialogue;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.view.Menu;
@@ -57,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
     String EMAIL = "aaz15@mail.aub.edu";
     int PROFILE = R.drawable.ic_user;
 
+
+
+    private FloatingActionButton fab;
     private Toolbar toolbar;                              // Declaring the Toolbar Object
 
     RecyclerView mRecyclerView;                           // Declaring RecyclerView
@@ -87,6 +92,18 @@ public class MainActivity extends AppCompatActivity {
      */
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+
+
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new Intent(MainActivity.this, NewMessageActivity.class);
+                //startActivity(intent);
+                Toast.makeText(getApplicationContext(), "Button Clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
         threadRV = (RecyclerView) findViewById(R.id.threadRecyclerView);
