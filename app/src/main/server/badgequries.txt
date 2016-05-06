@@ -1,0 +1,4 @@
+INSERT INTO `BADGE`(`BadgeTitle`, `Icon`, `MinimumPoints`) VALUES ("Bronze", "icons/bronze.ico", "0");
+INSERT INTO `BADGE`(`BadgeTitle`, `Icon`, `MinimumPoints`) VALUES ("Silver", "icons/silver.ico", "100");
+INSERT INTO `BADGE`(`BadgeTitle`, `Icon`, `MinimumPoints`) VALUES ("Gold", "icons/gold.ico", "350");
+INSERT INTO `BADGE`(`BadgeTitle`, `Icon`, `MinimumPoints`) VALUES ("Platinium", "icons/platinium.ico", "500");

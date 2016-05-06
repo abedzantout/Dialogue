@@ -1,0 +1,59 @@
+
+
+CREATE TABLE BADGE(
+   BadgeTitle VARCHAR(15) NOT NULL,
+   Icon VARCHAR(30) NOT NULL,
+   MinimumPoints INT(3) NOT NULL,
+   PRIMARY KEY (BadgeTitle)
+);
+
+CREATE TABLE USER(
+    Username VARCHAR(20) NOT NULL,
+    Email VARCHAR(50) NOT NULL,
+    Picture VARCHAR(30),
+    Points INT(5) DEFAULT 1 NOT NULL,
+    Password VARCHAR(50) NOT NULL,
+    Firstname VARCHAR(25),
+    Lastname VARCHAR(25),
+	BadgeTitle VARCHAR(15) NOT NULL,
+    PRIMARY KEY(Username),
+	FOREIGN KEY(BadgeTitle) REFERENCES BADGE(BadgeTitle)
+);
+
+CREATE TABLE THREAD (
+    ThreadID INT(9) NOT NULL AUTO_INCREMENT,
+    Title VARCHAR(255) NOT NULL,
+    PostID int(9) NOT NULL,
+    PRIMARY KEY (ThreadID)  
+);
+
+CREATE TABLE POST(
+    ThreadID INT(9) NOT NULL,
+    PostID INT(9) NOT NULL,
+    Content TEXT NOT NULL,
+    NumberOfLines INT(5) NOT NULL,
+    PRIMARY KEY(ThreadID, PostID),
+    FOREIGN KEY(ThreadID) REFERENCES THREAD(ThreadID)
+);
+
+
+
+CREATE TABLE POSTED(
+   Username VARCHAR(20) NOT NULL,
+   ThreadID INT(9) NOT NULL,
+   PostID INT(9) NOT NULL,
+   PRIMARY KEY(ThreadID,PostID),
+   FOREIGN KEY(ThreadID,PostID) REFERENCES POST(ThreadID,PostID),
+   FOREIGN KEY (Username) REFERENCES USER(Username)
+);
+
+CREATE TABLE OWNS(
+   Username VARCHAR(20) NOT NULL,
+   ThreadID INT(9) NOT NULL,
+   PRIMARY KEY(Username, ThreadID),
+   FOREIGN KEY (Username) REFERENCES USER(Username),
+   FOREIGN KEY (ThreadID) REFERENCES THREAD(ThreadID)
+);
+
+
+
