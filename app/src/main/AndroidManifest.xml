@@ -29,7 +29,15 @@
             android:name=".SignupActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".ThreadFrame" />
+        <activity
+            android:name=".CreateThread"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".DetailedThreadActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".updateUserInfoActivity"></activity>
     </application>
 
 </manifest>

@@ -1,15 +1,25 @@
 package ateam.dialogue;
 
 public class Thread {
-    private String title, author, datePosted;
+
+    private int ID;
+    private String title, poster;
 
     public Thread() {
     }
 
-    public Thread(String title, String author, String datePosted) {
+    public Thread(int ID, String title, String poster) {
+        this.ID = ID;
         this.title = title;
-        this.author = author;
-        this.datePosted = datePosted;
+        this.poster = poster;
+    }
+
+    public int getID(){
+        return ID;
+    }
+
+    public void setID(int id){
+        this.ID = id;
     }
 
     public String getTitle() {
@@ -20,19 +30,11 @@ public class Thread {
         this.title = name;
     }
 
-    public String getYear() {
-        return datePosted;
+    public String getPoster() {
+        return poster;
     }
 
-    public void setDate(String datePosted) {
-        this.datePosted = datePosted;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String genre) {
-        this.author = genre;
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 }

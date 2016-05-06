@@ -104,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
             StrictMode.setThreadPolicy(policy);
         }
 
-        String link = "http://192.168.0.184/authenticate.php?email=" + email + "&password=" + password;
+        String link = "http://10.168.79.15/authenticate.php?email=" + email + "&password=" + password;
 
 
         try {
@@ -137,6 +137,10 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 alert.show();
+
+                _loginButton.setClickable(true);
+                _loginButton.setEnabled(true);
+
             } else {
 
                 // Login Successful
@@ -147,6 +151,12 @@ public class LoginActivity extends AppCompatActivity {
 
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     // push user info
+                    JSONObject jsonResponse = new JSONObject(json.substring(1, json.length()-1));
+                    String username = jsonResponse.getString("Username");
+                    String emailResponse = jsonResponse.getString("Email");
+
+                    i.putExtra("USERNAME", username);
+                    i.putExtra("EMAIL", emailResponse);
 
                     startActivity(i);
 
@@ -211,6 +221,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public boolean validate() {
+
         boolean valid = true;
 
         String email = _emailText.getText().toString();

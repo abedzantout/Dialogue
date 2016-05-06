@@ -42,9 +42,6 @@ public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
     private static final String PASSWORD_PATTERN = "^[a-zA-Z]\\w{3,14}$";
-    private Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
-    private Matcher matcher;
-
     @Bind(R.id.input_name)
     EditText _nameText;
     @Bind(R.id.input_email)
@@ -55,7 +52,8 @@ public class SignupActivity extends AppCompatActivity {
     Button _signupButton;
     @Bind(R.id.link_login)
     TextView _loginLink;
-
+    private Pattern pattern = Pattern.compile(PASSWORD_PATTERN);
+    private Matcher matcher;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -114,7 +112,7 @@ public class SignupActivity extends AppCompatActivity {
         }
 
 
-        String link = "http://192.168.0.184/insert.php?username="+username+"&email="+email+"&password="+password;
+        String link = "http://10.168.79.15/insert.php?username="+username+"&email="+email+"&password="+password;
 
         String responseString = "";
 
@@ -141,7 +139,7 @@ public class SignupActivity extends AppCompatActivity {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }catch(IOException ioe){
-            System.out.println("An IOException occured.");
+            System.out.println("An IOException occurred.");
         }
 
 
@@ -162,7 +160,6 @@ public class SignupActivity extends AppCompatActivity {
             alert.show();
 
         }
-
 
         Intent i = new Intent(getApplicationContext(), LoginActivity.class);
         startActivity(i);
@@ -190,7 +187,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "Sign up failed", Toast.LENGTH_LONG).show();
 
         _signupButton.setEnabled(true);
     }

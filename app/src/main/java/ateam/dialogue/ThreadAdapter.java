@@ -12,20 +12,9 @@ import java.util.List;
 public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.MyViewHolder> {
     private List<Thread> threadList;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, year;
-
-        public MyViewHolder(View view) {
-            super(view);
-            title = (TextView) view.findViewById(R.id.title);
-            year = (TextView) view.findViewById(R.id.year);
-        }
-}
-
     public ThreadAdapter(List<Thread> threadList) {
         this.threadList = threadList;
     }
-
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -37,13 +26,23 @@ public class ThreadAdapter extends RecyclerView.Adapter<ThreadAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Thread movie = threadList.get(position);
-        holder.title.setText(movie.getTitle());
-        holder.year.setText(movie.getYear());
+        Thread t = threadList.get(position);
+        holder.title.setText(t.getTitle());
+        holder.poster.setText(t.getPoster());
     }
 
     @Override
     public int getItemCount() {
         return threadList.size();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView title, poster;
+
+        public MyViewHolder(View view) {
+            super(view);
+            title = (TextView) view.findViewById(R.id.title);
+            poster = (TextView) view.findViewById(R.id.poster);
+        }
     }
 }
