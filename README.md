@@ -27,6 +27,8 @@ Are databases part of our lives? Yes, in every way conceivable.Almost any applic
 This project is still in very alpha stage, and may or may not be continued depending on the main developers.
 This project was intended as a final term project for CMPS 277 database course.
 
+This project is far from its final version, and requires more work. But I'll leave it here for others to benefit from it :)
+
 ##License
 
 Copyright 2016 [Abed Zantout](https://github.com/abedzantout/), [Abbas Baydoun](https://github.com/abbasb717)
